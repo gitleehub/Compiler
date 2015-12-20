@@ -97,6 +97,7 @@ public class Node {
 		this.type = type;
 	}
 
+
 	/**
 	 * 获取该结点的层级
 	 *
@@ -120,12 +121,7 @@ public class Node {
 	 *
 	 * @return 所有孩子结点
 	 */
-	public List<Node> getChilds() {
-		if (this.hasChild())
-			return childs;
-		else
-			return null;
-	}
+	public List<Node> getChilds() {	return childs;	}
 
 	/**
 	 * 检查是否存在孩子
