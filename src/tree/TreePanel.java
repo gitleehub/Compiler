@@ -4,12 +4,15 @@
  */
 package tree;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.swing.JPanel;
 
 /**
  * TODO 同一层结点过多有BUG，应该对每一层的所有结点都进行个数统计，之后才绘制。
@@ -136,12 +139,13 @@ public class TreePanel extends JPanel {
 		Queue<Node> queue = new LinkedBlockingQueue<>();
 		List<Node> currList = new ArrayList<>();
 		List<Node> fatherList = new ArrayList<>();
-		int currLayer = 0;
+		int rootLyyer = n.getLayer();
+		int currLayer = rootLyyer;
 		queue.offer(n);
 
 		while (!queue.isEmpty()) {
 			Node curr = queue.poll();
-			int layer = curr.getLayer();
+			int layer = curr.getLayer() - rootLyyer;
 			if (layer != currLayer) {
 				int y = currLayer * (vGap + gridHeight) + startY;
 				int fontY = y + gridHeight - 5;
@@ -272,6 +276,5 @@ public class TreePanel extends JPanel {
 	public void setStartX(int startX) {
 		this.startX = startX;
 	}
-
 
 }

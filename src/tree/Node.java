@@ -18,6 +18,7 @@ public class Node {
 	private String name;    //该结点名字
 	private int layer = 0;    //该结点层级
 	private String val = "";      //该结点的值
+	private String type = "";      //该结点的类型
 	private int tokenline = 1;
 
 	private List<Node> childs = null;    //保存该结点的孩子
@@ -71,6 +72,10 @@ public class Node {
 		return val;
 	}
 
+	public String getType() {
+		return type;
+	}
+
 	public int getLine() {
 		return tokenline;
 	}
@@ -86,6 +91,10 @@ public class Node {
 
 	public void setVal(String val) {
 		this.val = val;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/**
@@ -154,7 +163,7 @@ public class Node {
 	}
 
 	public String toString() {
-		return name + "@" + val;
+		return name + "@" + val + "@" + type;
 	}
 
 	public void setPosition(int x, int y) {
