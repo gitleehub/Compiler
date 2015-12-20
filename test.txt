@@ -1,5 +1,4 @@
 {
-int j;
-int j;
+int j,i;
 j=33.3;
 }
