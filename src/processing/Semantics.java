@@ -30,9 +30,9 @@ public class Semantics {
 
 		transiton(treeNode, tokens);
 
-//		System.out.println("Token list size :\t" + tokens.size());
-//		for (Token token : tokens)
-//			System.out.println(token);
+		System.out.println("Token list size :\t" + tokens.size());
+		for (Token token : tokens)
+			System.out.println(token);
 	}
 
 	public static void transiton(List<Node> treeNode, List<Token> tokens) {
