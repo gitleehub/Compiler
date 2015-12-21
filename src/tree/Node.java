@@ -132,6 +132,21 @@ public class Node {
 		return childs == null ? false : true;
 	}
 
+
+	/**
+	 * 判断是否为祖先关系
+	 *
+	 * @param node 可能的子孙节点
+	 */
+	public boolean isAncestorOf(Node node) {
+		if (node.getLayer() <= this.getLayer())
+			return false;
+		for (Node child : this.getChilds())
+			if (child == node || child.isAncestorOf(node))
+				return true;
+		return false;
+	}
+
 	/**
 	 * 递归打印所有的结点（包括子结点）
 	 *
