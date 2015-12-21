@@ -30,7 +30,7 @@ public class Semantics {
 		transition(treeNode, tokens);
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException{
 		Node n = new Node("program");
 
 		Lexer lexer = new Lexer("test.txt");

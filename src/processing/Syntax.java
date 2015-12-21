@@ -4,8 +4,10 @@ import io.Pair;
 import tree.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by He on 2015/11/25.
@@ -124,7 +126,7 @@ public class Syntax {
 		return errorInfo;
 	}
 
-	public List<Node> getTreeNode(){
+	public List<Node> getTreeNode() {
 		return treeNode;
 	}
 
@@ -152,7 +154,8 @@ public class Syntax {
 		for (int i = 0; i < error_info.size(); i++)
 			System.out.println(error_info.get(i));
 
-		//DrawTree(n);
+//		for (Node tree : stack_node)
+//			DrawTree(tree);
 	}
 
 	private void scan(Node n, Lexer lexer) {
@@ -320,6 +323,7 @@ public class Syntax {
 					inputInfo.add(tmp_input_info);
 					if (tmp_output_info != "")
 						outputInfo.add(tmp_output_info);
+
 				}
 
 				//单独处理缺失";"
@@ -363,11 +367,18 @@ public class Syntax {
 
 	}
 
-	public static void DrawTree(Node n) {
-		DrawTree frame = new DrawTree(n);
-		frame.setSize(800, 1000);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	}
+//	private int count = 0;
+//	private DrawTree window;
+//
+//	public void DrawTree(Node n) {
+//		if (count++ == 0) {
+//			window = new DrawTree(n);
+//		} else {
+//			window.initComponents(n);
+//		}
+//		window.setSize(800, 1000);
+//		window.setVisible(true);
+//		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//	}
 
 }

@@ -23,12 +23,27 @@ public class Node {
 
 	private List<Node> childs = null;    //保存该结点的孩子
 
+	private Node parent = null;
+
 	private Position position;
+
+	private boolean visited = false;
 
 	public Node(String name) {
 		this.name = name;
 	}
 
+	public Node(Node node) {
+		name = node.name;
+		layer = node.layer;
+		val = node.val;
+		type = node.type;
+		tokenline = node.tokenline;
+
+		if (node.hasChild())
+			for (Node child : node.getChilds())
+				add(new Node(child));
+	}
 
 	/**
 	 * 增加一个孩子
@@ -41,6 +56,12 @@ public class Node {
 		n.setLayer(layer + 1);
 		setChildLayout(n);
 		childs.add(n);
+		n.parent = this;
+	}
+
+	public void pop() {
+		if (!childs.isEmpty())
+			childs.remove(0);
 	}
 
 
@@ -53,7 +74,7 @@ public class Node {
 		if (n.hasChild()) {
 			List<Node> c = n.getChilds();
 			for (Node node : c) {
-				node.setLayer(node.getLayer() + 1);
+				node.setLayer(n.getLayer() + 1);
 				setChildLayout(node);
 			}
 		}
@@ -97,7 +118,6 @@ public class Node {
 		this.type = type;
 	}
 
-
 	/**
 	 * 获取该结点的层级
 	 *
@@ -121,17 +141,16 @@ public class Node {
 	 *
 	 * @return 所有孩子结点
 	 */
-	public List<Node> getChilds() {	return childs;	}
+	public List<Node> getChilds() {	return childs; }
 
 	/**
-	 * 检查是否存在孩子
+	 * 检查是否存在祖先关系
 	 *
 	 * @return 是则返回true，否则返回false
 	 */
 	public boolean hasChild() {
-		return childs == null ? false : true;
+		return childs != null && !childs.isEmpty();
 	}
-
 
 	/**
 	 * 判断是否为祖先关系
@@ -177,16 +196,49 @@ public class Node {
 		return name + "@" + val + "@" + type;
 	}
 
+	/**
+	 * 设置坐标
+	 *
+	 * @param x 横坐标X
+	 * @param y 纵坐标Y
+	 */
 	public void setPosition(int x, int y) {
 		position = new Position(x, y);
 	}
 
+	/**
+	 * 获取横坐标X
+	 *
+	 * @return 横坐标X
+	 */
 	public int getX() {
 		return position.getX();
 	}
 
+	/**
+	 * 获取纵坐标Y
+	 *
+	 * @return 纵坐标Y
+	 */
 	public int getY() {
 		return position.getY();
+	}
+
+	/**
+	 * 获取父节点
+	 *
+	 * @return 父节点
+	 */
+	public Node getParent() {
+		return parent;
+	}
+
+	public void setVisited(boolean flag) {
+		visited = flag;
+	}
+
+	public boolean notVisited() {
+		return !visited;
 	}
 }
 

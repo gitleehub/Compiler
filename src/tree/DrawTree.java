@@ -4,11 +4,8 @@
  */
 package tree;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author John
@@ -24,12 +21,13 @@ public class DrawTree extends JFrame {
 	}
 
 	public void initComponents(Node n) {
-		TreePanel panel = new TreePanel(TreePanel.CHILD_ALIGN_RELATIVE);
-		panel.setTree(n);
+		TreePanelForDFS panel1 = new TreePanelForDFS(TreePanelForDFS.CHILD_ALIGN_RELATIVE);
+		panel1.setTree(n);
 
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new GridLayout(1, 1));
-		contentPane.add(panel);
+		contentPane.add(panel1);
 		add(contentPane, BorderLayout.CENTER);
 	}
+
 }
