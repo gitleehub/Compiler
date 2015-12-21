@@ -47,9 +47,11 @@ public class Semantics {
 			List<String> _threeAddressInfo = semantics.getThreeAddressInfo();
 			List<String> _semanticsErrorInfo = semantics.getErrorInfo();
 			if (_semanticsErrorInfo.size() == 0)
-				_threeAddressInfo.forEach(System.out::print);
+				for (String string : _threeAddressInfo)
+					System.out.println(string);
 			else
-				_semanticsErrorInfo.forEach(System.out::print);
+				for (String string : _semanticsErrorInfo)
+					System.out.println(string);
 		} else
 			System.out.println("语法分析出错！");
 

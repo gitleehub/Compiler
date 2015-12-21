@@ -26,7 +26,8 @@ public class Test {
 
 		List<Token> tokens = lexer.getTokenList();
 		System.out.println("Token list size :\t" + tokens.size());
-		tokens.forEach(System.out::println);
+		for (Token string : tokens)
+			System.out.println(string);
 		System.out.println();
 
 		Syntax syntax = new Syntax(n, lexer);
@@ -54,13 +55,17 @@ public class Test {
 			List<String> semanticsErrorInfo = semantics.getErrorInfo();
 
 			if (semanticsErrorInfo.size() == 0) {
-				threeAddressInfo.forEach(System.out::print);
+				for (String string : threeAddressInfo)
+					System.out.println(string);
 				System.out.println("\n");
-				tokens.forEach(System.out::println);
+				for (Token string : tokens)
+					System.out.println(string);
 			} else
-				semanticsErrorInfo.forEach(System.out::print);
+				for (String string : semanticsErrorInfo)
+					System.out.println(string);
 		} else
-			syntaxErrorInfo.forEach(System.out::println);
+			for (String string : syntaxErrorInfo)
+				System.out.println(string);
 
 
 	}
