@@ -3,6 +3,7 @@ package test;
 import io.Pair;
 import io.Token;
 import processing.Lexer;
+import processing.Semantics;
 import processing.Syntax;
 import tree.Node;
 
@@ -20,25 +21,44 @@ public class Test {
 	public static void main(String[] args) throws IOException {
 
 		Node n = new Node("Program");
-		List<Pair<String, String>> stack_info = new ArrayList<>();
-		List<String> input_info = new ArrayList<>();
-		List<String> output_info = new ArrayList<>();
 
 		Lexer lexer = new Lexer("test.txt");
-		Syntax.scan(n, stack_info, input_info, output_info, lexer);
-
-//		for (int i = 0; i < stack_info.size(); i++) {
-//			System.out.print(stack_info.get(i) + "\t\t\t\t\t\t\t\t");
-//			System.out.print(input_info.get(i) + "\t\t\t\t\t\t\t\t");
-//			System.out.println(output_info.get(i));
-//		}
-//		Syntax.DrawTree(n);
-//		n.printAllNode(n);
 
 		List<Token> tokens = lexer.getTokenList();
 		System.out.println("Token list size :\t" + tokens.size());
-		for (Token token : tokens)
-			System.out.println(token);
+		tokens.forEach(System.out::println);
+		System.out.println();
+
+		Syntax syntax = new Syntax(n, lexer);
+		List<Pair<String, String>> stackInfo = syntax.getStackInfo();
+		List<String> inputInfo = syntax.getInputInfo();
+		List<String> outputInfo = syntax.getOutputInfo();
+		List<String> syntaxErrorInfo = syntax.getErrorInfo();
+		List<Node> treeNode = syntax.getTreeNode();
+
+		Semantics semantics;
+
+		if (syntaxErrorInfo.size() == 0) {
+			for (int i = 0; i < stackInfo.size(); i++) {
+				System.out.print(stackInfo.get(i) + "\t\t\t\t\t\t\t\t");
+				System.out.print(inputInfo.get(i) + "\t\t\t\t\t\t\t\t");
+				System.out.println(outputInfo.get(i));
+			}
+			System.out.println();
+
+			semantics = new Semantics(treeNode, tokens);
+			List<String> threeAddressInfo = semantics.getThreeAddressInfo();
+			List<String> semanticsErrorInfo = semantics.getErrorInfo();
+
+			if (semanticsErrorInfo.size() == 0) {
+				threeAddressInfo.forEach(System.out::print);
+				System.out.println("\n");
+				tokens.forEach(System.out::println);
+			} else
+				semanticsErrorInfo.forEach(System.out::print);
+		} else
+			syntaxErrorInfo.forEach(System.out::println);
+
 
 	}
 }
