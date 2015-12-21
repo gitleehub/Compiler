@@ -48,10 +48,10 @@ public class Semantics {
 			List<String> _semanticsErrorInfo = semantics.getErrorInfo();
 			if (_semanticsErrorInfo.size() == 0)
 				for (String string : _threeAddressInfo)
-					System.out.println(string);
+					System.out.print(string);
 			else
 				for (String string : _semanticsErrorInfo)
-					System.out.println(string);
+					System.out.print(string);
 		} else
 			System.out.println("语法分析出错！");
 
