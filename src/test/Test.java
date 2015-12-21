@@ -36,6 +36,9 @@ public class Test {
 		List<String> syntaxErrorInfo = syntax.getErrorInfo();
 		List<Node> treeNode = syntax.getTreeNode();
 
+		for (Node node : treeNode)
+			Syntax.DrawTree(node);
+
 		Semantics semantics;
 
 		if (syntaxErrorInfo.size() == 0) {

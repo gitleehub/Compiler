@@ -1,5 +1,4 @@
 {
 int n;
-real b;
-if(n==1)then b=3;else b=4;
+n=1+2+3;
 }
