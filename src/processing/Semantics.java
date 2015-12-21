@@ -257,7 +257,8 @@ public class Semantics {
 					break;
 				case (")"):
 					if (treeNode.get(0).getName().equals("while")) {
-						System.out.println("jumpf " + treeNode.get(2).getVal() + ",," + "b" + j);
+						//System.out.println("jumpf " + treeNode.get(2).getVal() + ",," + "b" + j);
+						threeAddressInfo.add("jumpf " + treeNode.get(2).getVal() + ",," + "b" + j + "\n");
 						treeNode.get(4).setVal("b" + j);
 						j++;
 					}

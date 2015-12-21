@@ -1,4 +1,7 @@
 {
 int a;
-n=1+2+3;
+while(a>2){
+if(a==2)then a=1;
+else a=3;
+}
 }
