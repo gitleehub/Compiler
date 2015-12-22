@@ -6,7 +6,10 @@ package tree;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * TODO 同一层结点过多有BUG，应该对每一层的所有结点都进行个数统计，之后才绘制。
