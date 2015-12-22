@@ -4,12 +4,15 @@
  */
 package tree;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.swing.JPanel;
 
 /**
  * TODO 同一层结点过多有BUG，应该对每一层的所有结点都进行个数统计，之后才绘制。
@@ -124,20 +127,24 @@ public class TreePanel extends JPanel {
 
 		if (n.hasChild()) {
 			List<Node> c = n.getChilds();
-			int size = n.getChilds().size();
+//			int size = n.getChilds().size();
+			int size = 0;
+			for (Node node : c)
+				if (!node.notVisited())
+					size++;
 			int tempPosx = childAlign == CHILD_ALIGN_RELATIVE
 					? x + gridWidth / 2 - (size * (gridWidth + hGap) - hGap) / 2
 					: (getWidth() - size * (gridWidth + hGap) + hGap) / 2;
 
 			int i = 0;
 			for (Node node : c) {
-				int newX = tempPosx + (gridWidth + hGap) * i;    //孩子结点起始X
 				if (!node.notVisited()) {
+					int newX = tempPosx + (gridWidth + hGap) * i;    //孩子结点起始X
 					g.setColor(linkLineColor);
 					g.drawLine(x + gridWidth / 2, y + gridHeight, newX + gridWidth / 2, y + gridHeight + vGap);    //画连接结点的线
 					drawAllNodeDepthFirst(node, newX, g);
+					i++;
 				}
-				i++;
 			}
 		}
 	}

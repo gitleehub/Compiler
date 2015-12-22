@@ -52,11 +52,11 @@ public class Test {
 			List<String> threeAddressInfo = semantics.getThreeAddressInfo();
 			List<String> semanticsErrorInfo = semantics.getErrorInfo();
 
-			//总树
-			syntax.DrawTree(n);
-			//分支树
-			for (Node node : treeNode)
-				syntax.DrawTree(node);
+//			//总树
+//			syntax.DrawTree(n);
+//			//分支树
+//			for (Node node : treeNode)
+//				syntax.DrawTree(node);
 
 			if (semanticsErrorInfo.size() == 0) {
 				for (String string : threeAddressInfo)
