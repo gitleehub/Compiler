@@ -134,29 +134,27 @@ public class Syntax {
 		scan(n, lexer);
 	}
 
-	public static void main(String[] args) throws IOException {
-		Node n = new Node("program");
-
-		Lexer lexer = new Lexer("test.txt");
-		Syntax syntax = new Syntax(n, lexer);
-
-		List<Pair<String, String>> stack_info = syntax.getStackInfo();
-		List<String> input_info = syntax.getInputInfo();
-		List<String> output_info = syntax.getOutputInfo();
-		List<String> error_info = syntax.getErrorInfo();
-
-		for (int i = 0; i < stack_info.size(); i++) {
-			System.out.print(stack_info.get(i) + "\t\t\t\t\t\t\t\t");
-			System.out.print(input_info.get(i) + "\t\t\t\t\t\t\t\t");
-			System.out.println(output_info.get(i));
-		}
-
-		for (int i = 0; i < error_info.size(); i++)
-			System.out.println(error_info.get(i));
-
-//		for (Node tree : stack_node)
-//			DrawTree(tree);
-	}
+//	public static void main(String[] args) throws IOException {
+//		Node n = new Node("program");
+//
+//		Lexer lexer = new Lexer("test.txt");
+//		Syntax syntax = new Syntax(n, lexer);
+//
+//		List<Pair<String, String>> stack_info = syntax.getStackInfo();
+//		List<String> input_info = syntax.getInputInfo();
+//		List<String> output_info = syntax.getOutputInfo();
+//		List<String> error_info = syntax.getErrorInfo();
+//
+//		for (int i = 0; i < stack_info.size(); i++) {
+//			System.out.print(stack_info.get(i) + "\t\t\t\t\t\t\t\t");
+//			System.out.print(input_info.get(i) + "\t\t\t\t\t\t\t\t");
+//			System.out.println(output_info.get(i));
+//		}
+//
+//		for (int i = 0; i < error_info.size(); i++)
+//			System.out.println(error_info.get(i));
+//
+//	}
 
 	private void scan(Node n, Lexer lexer) {
 
@@ -367,18 +365,9 @@ public class Syntax {
 
 	}
 
-//	private int count = 0;
-//	private DrawTree window;
-//
-//	public void DrawTree(Node n) {
-//		if (count++ == 0) {
-//			window = new DrawTree(n);
-//		} else {
-//			window.initComponents(n);
-//		}
-//		window.setSize(800, 1000);
-//		window.setVisible(true);
-//		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//	}
+	public static void DrawTree(Node n) {
+		DrawTree frame = new DrawTree();
+		frame.broadFirstDraw(n);
+	}
 
 }

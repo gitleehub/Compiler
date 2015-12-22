@@ -34,8 +34,8 @@ public class RTest {
 
 		root = new Node("program");
 		Syntax syntax = new Syntax(root, new Lexer("test.txt"));
-		DrawSlowly rTest = new DrawSlowly(root);
-		rTest.drawStepByStep();
+		DrawSlowly rTest = new DrawSlowly();
+		rTest.drawStepByStep(root,1000);
 	}
 
 //	public void draw() throws InterruptedException {
