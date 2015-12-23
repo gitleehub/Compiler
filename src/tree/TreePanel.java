@@ -4,15 +4,12 @@
  */
 package tree;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import javax.swing.JPanel;
 
 /**
  * TODO 同一层结点过多有BUG，应该对每一层的所有结点都进行个数统计，之后才绘制。
@@ -24,7 +21,7 @@ public class TreePanel extends JPanel {
 	private Node tree;                //保存整棵树
 	private int gridWidth = 100;        //每个结点的宽度
 	private int gridHeight = 20;    //每个结点的高度
-	private int vGap = 80;            //每2个结点的垂直距离
+	private int vGap = 33;            //每2个结点的垂直距离
 	private int hGap = 30;            //每2个结点的水平距离
 
 	private int startY = 10;        //根结点的Y，默认距离顶部10像素

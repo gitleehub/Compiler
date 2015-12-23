@@ -190,20 +190,20 @@ public class Compiler extends javax.swing.JFrame {
 										.addGroup(MainPanelLayout.createSequentialGroup()
 												.addComponent(InScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
 												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(InScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+												.addComponent(InScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
 										.addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 								.addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+										.addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
 										.addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 11, Short.MAX_VALUE)
 								.addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+										.addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
 										.addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 								.addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-										.addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+										.addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+										.addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
 										.addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 								.addContainerGap(54, Short.MAX_VALUE))
 		);
@@ -416,7 +416,7 @@ public class Compiler extends javax.swing.JFrame {
 				b += token.getKey() + "\t[" + token.getTag() + "]\t" + token.getValue() + "\n";
 
 			for (String token : input)
-				origin += token + " " + "\n";
+				origin += token + "\n";
 
 			try {
 				FileWriter fileWriter = new FileWriter(new File("test.txt"), false);
@@ -643,11 +643,14 @@ public class Compiler extends javax.swing.JFrame {
 		jLabel3.setText("");
 		jLabel4.setText("");
 		i = 1;
+		_sInfo = "";
+		_input = "";
+		_output = "";
 	}
 
 	private void AboutActionPerformed(java.awt.event.ActionEvent evt) {
 		// TODO add your handling code here:
-		String str = "10132510329 束振鹤" + "\n" + "10132510331 高竹" + "\n" + "10132510332 陈恒本" + "\n" + "10132510327 朱柯舟";
+		String str = "10132510329 束振鹤" + "\n" + "10132510329 高竹" + "\n" + "10132510329 陈恒本" + "\n" + "10132510329 朱柯舟";
 		JOptionPane.showMessageDialog(null, str);
 	}
 

@@ -1,8 +1,8 @@
 package processing;
 
 import io.Pair;
-import tree.*;
-
+import tree.DrawTree;
+import tree.Node;
 
 import java.util.*;
 
