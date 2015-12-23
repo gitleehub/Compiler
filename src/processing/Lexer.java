@@ -103,9 +103,9 @@ public class Lexer {
 	 */
 	private void scan(List<String> code) {
 
+		List<Pair<String, String>> originalLine = new ArrayList<>();
+		List<String> formatedLine = new ArrayList<>();
 		for (String line : code) {
-			List<Pair<String, String>> originalLine = new ArrayList<>();
-			List<String> formatedLine = new ArrayList<>();
 
 			for (int i = 0; i < line.length(); ) {
 				// 扫空格
@@ -121,6 +121,10 @@ public class Lexer {
 
 					originalLine.add(new Pair<>(comment, comment));
 					formatedLine.add(comment);
+					originalCode.add(originalLine);
+					originalLine = new ArrayList<>();
+					formatedCode.add(formatedLine);
+					formatedLine = new ArrayList<>();
 
 				} else if (Character.isLetter(line.charAt(i))) {
 					// keyword or identifiers
@@ -163,14 +167,37 @@ public class Lexer {
 					// delimeters
 					tokens.add("" + line.charAt(i));
 					map.put("" + line.charAt(i), DEL);
-
-					originalLine.add(new Pair<>("" + line.charAt(i), "" + line.charAt(i)));
-					formatedLine.add("" + line.charAt(i));
-					if (line.charAt(i) == ';' || line.charAt(i) == '{' || line.charAt(i) == '}') {
+					if (line.charAt(i) == '{') {
+						originalLine.add(new Pair<>("{", "{"));
+						formatedLine.add("{");
 						originalCode.add(originalLine);
 						originalLine = new ArrayList<>();
 						formatedCode.add(formatedLine);
 						formatedLine = new ArrayList<>();
+
+					} else if (line.charAt(i) == '}') {
+						if (!formatedLine.isEmpty()) {
+							originalCode.add(originalLine);
+							originalLine = new ArrayList<>();
+							formatedCode.add(formatedLine);
+							formatedLine = new ArrayList<>();
+						}
+						originalLine.add(new Pair<>("}", "}"));
+						formatedLine.add("}");
+						originalCode.add(originalLine);
+						originalLine = new ArrayList<>();
+						formatedCode.add(formatedLine);
+						formatedLine = new ArrayList<>();
+
+					} else {
+						originalLine.add(new Pair<>("" + line.charAt(i), "" + line.charAt(i)));
+						formatedLine.add("" + line.charAt(i));
+						if (line.charAt(i) == ';') {
+							originalCode.add(originalLine);
+							originalLine = new ArrayList<>();
+							formatedCode.add(formatedLine);
+							formatedLine = new ArrayList<>();
+						}
 					}
 					i++;
 
@@ -215,12 +242,16 @@ public class Lexer {
 				}
 			}
 
-			if (!formatedLine.isEmpty()) {
-				originalCode.add(originalLine);
-				formatedCode.add(formatedLine);
-			}
+//			if (!formatedLine.isEmpty()) {
+//				originalCode.add(originalLine);
+//				formatedCode.add(formatedLine);
+//			}
 		}
 
+		if (!formatedLine.isEmpty()) {
+			originalCode.add(originalLine);
+			formatedCode.add(formatedLine);
+		}
 
 		for (String token : tokens)
 			codeList.add(new Pair<>(token, map.get(token)));
@@ -312,5 +343,26 @@ public class Lexer {
 			}
 
 		return list;
+	}
+
+	public List<String> getBeautifulCode(List<List<Pair<String, String>>> originalCode) {
+		List<String> beautifulCode = new ArrayList<>();
+		String beautifulLine;
+		int base = 0;
+		for (List<Pair<String, String>> line : originalCode) {
+			if (line.get(0).getFirst().equals("}"))
+				base--;
+			beautifulLine = "";
+			for (int i = 0; i < base; ++i)
+				beautifulLine += "    ";
+			for (int i = 0; i < line.size() - 1; ++i)
+				beautifulLine += line.get(i).getFirst() + " ";
+			beautifulLine += line.get(line.size() - 1).getFirst();
+			if (beautifulLine.endsWith("{"))
+				base++;
+			beautifulCode.add(beautifulLine);
+		}
+
+		return beautifulCode;
 	}
 }
