@@ -181,6 +181,12 @@ public class Syntax {
 
 		for (List<Pair<String, String>> line : codeTable) {
 
+			if(stack.isEmpty()) {
+				outputInfo.add("line " + nowline + " error input");
+				errorInfo.add("line " + nowline + " error input");
+				break;
+			}
+
 			//获得当前输入行信息
 			for (Pair<String, String> token : line)
 				tmp_input_info += token.getFirst();
@@ -189,6 +195,10 @@ public class Syntax {
 			for (i = 0; i < line.size(); i++) {
 
 				String token = line.get(i).getSecond();
+				if (token.startsWith("//")) {
+					tmp_input_info = tmp_input_info.substring(line.get(i).getFirst().length());
+					continue;
+				}
 
 				boolean errorflag = true;
 				int length = 0;
@@ -325,10 +335,7 @@ public class Syntax {
 					break;
 
 				//单独处理缺失";"
-//				if(stack.isEmpty())
-//					System.out.println(nowline);
-				if (i == line.size() - 1 && !stack.isEmpty() && !stack.peek().equals("stmts") && !stack.peek().equals("then") && !stack.peek().equals("else") && (!token.equals("{") || !token.equals("}") || !token.equals(";") || !token.equals("$")))
-				{
+				if (i == line.size() - 1 && !stack.isEmpty() && !stack.peek().equals("stmts") && !stack.peek().equals("then") && !stack.peek().equals("else") && (!token.equals("{") || !token.equals("}") || !token.equals(";") || !token.equals("$"))) {
 
 					tmpstack = (Stack<String>) stack.clone();
 					while (!tmpstack.isEmpty())
@@ -339,7 +346,7 @@ public class Syntax {
 					if (tmp_output_info != "")
 						outputInfo.add(tmp_output_info);
 
-					while (!stack.peek().equals("stmts"))
+					while (!stack.isEmpty() && !stack.peek().equals("stmts"))
 						stack.pop();
 
 					tmp_output_info = "line " + nowline + " error line ,isn't a legal line";

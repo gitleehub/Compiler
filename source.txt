@@ -1,5 +1,5 @@
 {
-int i,j,n,sum,mult;
+//int i,j,n,sum,mult;
 i=10;
 j=100;
 n=1;
