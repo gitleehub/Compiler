@@ -6,23 +6,35 @@
 package ui;
 
 import io.Pair;
-import processing.*;
-import tree.*;
+import io.Token;
+import processing.Lexer;
+import processing.Semantics;
+import processing.Syntax;
+import test.RTest;
+import tree.DrawSlowly;
+import tree.Node;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.*;
 import java.util.List;
+import javax.swing.*;
+
 
 /**
  * @author MY
  */
 public class Compiler extends javax.swing.JFrame {
-	static int i = 1;
+	private boolean isMoved;
+	private Point pre_point;
+	private Point end_point;
+	private boolean isMax = false;
 
-	String _stack = "";
+	static int i = 1;
+	String origin = "";
+	String _sInfo = "";
 	String _input = "";
 	String _output = "";
-	String origin = "";
 
 	/**
 	 * Creates new form cuteboy
@@ -40,130 +52,228 @@ public class Compiler extends javax.swing.JFrame {
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
 
-		jPanel1 = new javax.swing.JPanel();
-		jButton1 = new javax.swing.JButton();
-		jButton2 = new javax.swing.JButton();
 		jScrollPane1 = new javax.swing.JScrollPane();
 		jTextArea1 = new javax.swing.JTextArea();
+		jPanel1 = new javax.swing.JPanel();
 		jScrollPane2 = new javax.swing.JScrollPane();
 		jTextArea2 = new javax.swing.JTextArea();
 		jScrollPane3 = new javax.swing.JScrollPane();
 		jTextArea3 = new javax.swing.JTextArea();
+		jLabel1 = new javax.swing.JLabel();
+		jScrollPane5 = new javax.swing.JScrollPane();
+		jTextPane2 = new javax.swing.JTextPane();
 		jScrollPane4 = new javax.swing.JScrollPane();
 		jTextArea4 = new javax.swing.JTextArea();
-
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setBackground(new java.awt.Color(233, 233, 233));
-		setPreferredSize(new java.awt.Dimension(1300, 800));
-
-		jPanel1.setBackground(new java.awt.Color(237, 237, 237));
-		jPanel1.setPreferredSize(new java.awt.Dimension(1200, 800));
-
-		jButton1.setBackground(new java.awt.Color(255, 255, 255));
-		jButton1.setFont(new java.awt.Font("微软雅黑 Light", 0, 14)); // NOI18N
-		jButton1.setText("词法分析");
-		jButton1.setBorder(null);
-		jButton1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton1ActionPerformed(evt);
-			}
-		});
-
-		jButton2.setBackground(new java.awt.Color(255, 255, 255));
-		jButton2.setFont(new java.awt.Font("微软雅黑 Light", 0, 14)); // NOI18N
-		jButton2.setText("语法分析");
-		jButton2.setBorder(null);
-		jButton2.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton2ActionPerformed(evt);
-			}
-		});
+		jMenuBar1 = new javax.swing.JMenuBar();
+		jMenu1 = new javax.swing.JMenu();
+		jMenuItem1 = new javax.swing.JMenuItem();
+		jMenu2 = new javax.swing.JMenu();
+		jMenuItem2 = new javax.swing.JMenuItem();
+		jMenuItem3 = new javax.swing.JMenuItem();
+		jMenuItem4 = new javax.swing.JMenuItem();
+		jMenu3 = new javax.swing.JMenu();
+		jMenuItem5 = new javax.swing.JMenuItem();
+		jMenuItem6 = new javax.swing.JMenuItem();
 
 		jTextArea1.setColumns(20);
-		jTextArea1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
 		jTextArea1.setRows(5);
-		jTextArea1.setBorder(null);
-		jTextArea1.setCaretColor(new java.awt.Color(255, 255, 255));
-		jTextArea1.setSelectionColor(new java.awt.Color(153, 153, 153));
 		jScrollPane1.setViewportView(jTextArea1);
 
-		jTextArea2.setBackground(new java.awt.Color(238, 238, 238));
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setBackground(new java.awt.Color(32, 32, 32));
+		setUndecorated(true);
+		setPreferredSize(new java.awt.Dimension(1350, 800));
+
+		jPanel1.setBackground(new java.awt.Color(223, 222, 212));
+		jPanel1.setFocusable(false);
+		jPanel1.setPreferredSize(new java.awt.Dimension(1292, 700));
+		jPanel1.setRequestFocusEnabled(false);
+
+		jScrollPane2.setBackground(new java.awt.Color(223, 222, 212));
+		jScrollPane2.setBorder(null);
+
+		jTextArea2.setEditable(false);
+		jTextArea2.setBackground(new java.awt.Color(222, 222, 222));
 		jTextArea2.setColumns(20);
-		jTextArea2.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+		jTextArea2.setFont(new java.awt.Font("微软雅黑 Light", 0, 14)); // NOI18N
 		jTextArea2.setRows(5);
-		jTextArea2.setBorder(null);
+		jTextArea2.setBorder(BorderFactory.createEmptyBorder());
 		jTextArea2.setCaretColor(new java.awt.Color(227, 227, 227));
+		jTextArea2.setSelectionColor(new java.awt.Color(153, 153, 153));
 		jScrollPane2.setViewportView(jTextArea2);
 
-		jTextArea3.setBackground(new java.awt.Color(238, 238, 238));
+		jScrollPane3.setBackground(new java.awt.Color(223, 222, 212));
+		jScrollPane3.setBorder(null);
+
+		jTextArea3.setEditable(false);
+		jTextArea3.setBackground(new java.awt.Color(222, 222, 222));
 		jTextArea3.setColumns(20);
-		jTextArea3.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+		jTextArea3.setFont(new java.awt.Font("微软雅黑 Light", 0, 14)); // NOI18N
 		jTextArea3.setRows(5);
-		jTextArea3.setBorder(null);
+		jTextArea3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		jTextArea3.setCaretColor(new java.awt.Color(227, 227, 227));
+		jTextArea3.setSelectionColor(new java.awt.Color(153, 153, 153));
 		jScrollPane3.setViewportView(jTextArea3);
 
-		jTextArea4.setBackground(new java.awt.Color(238, 238, 238));
+		jLabel1.setFont(new java.awt.Font("微软雅黑 Light", 0, 14)); // NOI18N
+		jLabel1.setText("  输入：");
+
+		jScrollPane5.setBackground(new java.awt.Color(255, 255, 255));
+		jScrollPane5.setBorder(null);
+		jScrollPane5.getVerticalScrollBar().setBackground(new java.awt.Color(223, 222, 212));
+
+		jTextPane2.setBorder(null);
+		jScrollPane5.setViewportView(jTextPane2);
+
+		jScrollPane4.setBorder(null);
+
+		jTextArea4.setEditable(false);
+		jTextArea4.setBackground(new java.awt.Color(222, 222, 222));
 		jTextArea4.setColumns(20);
-		jTextArea4.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+		jTextArea4.setFont(new java.awt.Font("微软雅黑 Light", 0, 14)); // NOI18N
 		jTextArea4.setRows(5);
 		jTextArea4.setBorder(null);
-		jTextArea4.setCaretColor(new java.awt.Color(227, 227, 227));
+		jTextArea4.setSelectionColor(new java.awt.Color(153, 153, 153));
 		jScrollPane4.setViewportView(jTextArea4);
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
 		jPanel1.setLayout(jPanel1Layout);
 		jPanel1Layout.setHorizontalGroup(
-				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
 						.addGroup(jPanel1Layout.createSequentialGroup()
-								.addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+										.addGroup(jPanel1Layout.createSequentialGroup()
+												.addGap(35, 35, 35)
+												.addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+												.addContainerGap()
+												.addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGroup(jPanel1Layout.createSequentialGroup()
-								.addGap(0, 0, Short.MAX_VALUE)
-								.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(85, 85, 85)
-								.addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(351, 351, 351))
+								.addContainerGap(82, Short.MAX_VALUE))
 		);
 		jPanel1Layout.setVerticalGroup(
 				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(jPanel1Layout.createSequentialGroup()
-								.addGap(41, 41, 41)
+								.addGap(58, 58, 58)
+								.addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGap(0, 0, 0)
 								.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(jScrollPane2)
-										.addComponent(jScrollPane1)
-										.addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE)
-										.addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-								.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addGap(36, 36, 36))
+										.addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addContainerGap(167, Short.MAX_VALUE))
 		);
+
+		jMenuBar1.setBackground(new java.awt.Color(204, 204, 204));
+		jMenuBar1.setBorder(null);
+		jMenuBar1.setPreferredSize(new java.awt.Dimension(300, 40));
+
+		jMenu1.setBackground(new java.awt.Color(204, 204, 204));
+		jMenu1.setBorder(null);
+		jMenu1.setText("词法分析");
+		jMenu1.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
+		jMenu1.setMinimumSize(new java.awt.Dimension(150, 0));
+		jMenu1.setPreferredSize(new java.awt.Dimension(150, 50));
+		jMenu1.setPreferredSize(new java.awt.Dimension(150, 160));
+
+		jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+		jMenuItem1.setLabel("全部运行");
+		jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jMenuItem1ActionPerformed(evt);
+			}
+		});
+		jMenu1.add(jMenuItem1);
+
+		jMenuBar1.add(jMenu1);
+
+		jMenu2.setBackground(new java.awt.Color(204, 204, 204));
+		jMenu2.setBorder(null);
+		jMenu2.setText("语法分析");
+		jMenu2.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
+		jMenu2.setMinimumSize(new java.awt.Dimension(150, 0));
+		jMenu2.setPreferredSize(new java.awt.Dimension(150, 50));
+		jMenu2.setPreferredSize(new java.awt.Dimension(150, 160));
+
+		jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK));
+		jMenuItem2.setLabel("显示语法树");
+		jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jMenuItem2ActionPerformed(evt);
+			}
+		});
+		jMenu2.add(jMenuItem2);
+
+		jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.SHIFT_MASK));
+		jMenuItem3.setLabel("显示爱情鸟");
+		jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jMenuItem3ActionPerformed(evt);
+			}
+		});
+		jMenu2.add(jMenuItem3);
+
+		jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK));
+		jMenuItem4.setLabel("显示爱情洞");
+		jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				try {
+					jMenuItem4ActionPerformed(evt);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		jMenu2.add(jMenuItem4);
+
+		jMenuBar1.add(jMenu2);
+
+		jMenu3.setBackground(new java.awt.Color(204, 204, 204));
+		jMenu3.setBorder(null);
+		jMenu3.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
+		jMenu3.setLabel("语义分析");
+		jMenu3.setMinimumSize(new java.awt.Dimension(150, 0));
+		jMenu3.setPreferredSize(new java.awt.Dimension(150, 50));
+		jMenu3.setPreferredSize(new java.awt.Dimension(150, 120));
+
+		jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+		jMenuItem5.setLabel("显示爱情鹤");
+		jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jMenuItem5ActionPerformed(evt);
+			}
+		});
+		jMenu3.add(jMenuItem5);
+
+		jMenuBar1.add(jMenu3);
+
+		setJMenuBar(jMenuBar1);
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1600, Short.MAX_VALUE)
+						.addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1350, Short.MAX_VALUE)
 		);
 		layout.setVerticalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(layout.createSequentialGroup()
+								.addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGap(0, 0, Short.MAX_VALUE))
 		);
 
 		pack();
 	}// </editor-fold>
 
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+	private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {
 		// TODO add your handling code here:
-		_stack = "";
+		_sInfo = "";
 		_input = "";
 		_output = "";
 		i = 1;
@@ -171,19 +281,23 @@ public class Compiler extends javax.swing.JFrame {
 		jTextArea3.setText("");
 		jTextArea4.setText("");
 		String a = "";
+		String b = "";
 		List<String> input = new ArrayList<>();
 
-		String[] split = jTextArea1.getText().split("\n");
+		String[] split = jTextPane2.getText().split("\n");
 		for (String line : split)
 			input.add(line);
 
 		Lexer lexer = new Lexer(input);
 		List<List<Pair<String, String>>> source = lexer.getOriginalCode();
 		List<Pair<String, String>> codeList = lexer.getCodeList();
+		List<Token> tokens = lexer.getTokenList();
 
-		for (Pair<String, String> token : codeList) {
+		for (Pair<String, String> token : codeList)
 			a += token.getFirst() + "\t[" + token.getSecond() + "]\n";
-		}
+
+		for (Token token : tokens)
+			b += token.getKey() + "\t[" + token.getTag() + "]\t" + token.getValue() + "\n";
 
 		for (List<Pair<String, String>> line : source) {
 			for (Pair<String, String> token : line)
@@ -191,26 +305,28 @@ public class Compiler extends javax.swing.JFrame {
 			origin += "\n";
 		}
 
-		jTextArea1.setText(origin);
+		jTextPane2.setText(origin);
 		jTextArea2.setText(a);
+		jTextArea3.setText(b);
 		origin = "";
 	}
 
-	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+	private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {
 		// TODO add your handling code here:
 		jTextArea2.setText("");
 		jTextArea3.setText("");
 		jTextArea4.setText("");
+
 		Node n = new Node("Program");
 
 		List<String> input = new ArrayList<>();
 
-		String[] split = jTextArea1.getText().split("\n");
+		String[] split = jTextPane2.getText().split("\n");
 		for (String line : split)
 			input.add(line);
 
 		Lexer lexer = new Lexer(input);
-		Syntax syntax = new Syntax(n,lexer);
+		Syntax syntax = new Syntax(n, lexer);
 
 		List<Pair<String, String>> stackInfo = syntax.getStackInfo();
 		List<String> inputInfo = syntax.getInputInfo();
@@ -219,65 +335,187 @@ public class Compiler extends javax.swing.JFrame {
 		if (stackInfo.get(i).getFirst() != null) {
 			for (int j = 0; j < stackInfo.size(); j++)
 				if (stackInfo.get(j).getFirst().equals(i + "")) {
-					_stack += stackInfo.get(j).getFirst() + " " + stackInfo.get(j).getSecond() + "\n";
+					_sInfo += stackInfo.get(j).getFirst() + " " + stackInfo.get(j).getSecond() + "\n";
 					_input += stackInfo.get(j).getFirst() + " " + inputInfo.get(j) + "\n";
 					_output += stackInfo.get(j).getFirst() + " " + outputInfo.get(j) + "\n";
 				}
 		}
 		i++;
-		jTextArea2.setText(_stack);
+		jTextArea2.setText(_sInfo);
 		jTextArea3.setText(_input);
 		jTextArea4.setText(_output);
-		//Syntax.DrawTree(n);
 	}
+
+	private void jMenuItem3ActionPerformed(ActionEvent evt) {
+		// TODO add your handling code here:
+		jTextArea2.setText("");
+		jTextArea3.setText("");
+		jTextArea4.setText("");
+
+		String sInfo = "";
+		String iInfo = "";
+		String oInfo = "";
+
+		Node n = new Node("Program");
+
+		List<String> input = new ArrayList<>();
+
+		String[] split = jTextPane2.getText().split("\n");
+		for (String line : split)
+			input.add(line);
+
+		Lexer lexer = new Lexer(input);
+		Syntax syntax = new Syntax(n, lexer);
+
+		List<Pair<String, String>> stackInfo = syntax.getStackInfo();
+		List<String> inputInfo = syntax.getInputInfo();
+		List<String> outputInfo = syntax.getOutputInfo();
+
+		for (int i = 0; i < stackInfo.size(); i++) {
+			sInfo += stackInfo.get(i).getFirst() + " " + stackInfo.get(i).getSecond() + "\n";
+			iInfo += stackInfo.get(i).getFirst() + " " + inputInfo.get(i) + "\n";
+			oInfo += stackInfo.get(i).getFirst() + " " + outputInfo.get(i) + "\n";
+		}
+
+		jTextArea2.setText(sInfo);
+		jTextArea3.setText(iInfo);
+		jTextArea4.setText(oInfo);
+	}
+
+	private void jMenuItem4ActionPerformed(ActionEvent evt) throws Exception {
+		// TODO add your handling code here:
+		Node n = new Node("Program");
+
+		List<String> input = new ArrayList<>();
+
+		String[] split = jTextPane2.getText().split("\n");
+		for (String line : split)
+			input.add(line);
+
+		Lexer lexer = new Lexer(input);
+		Syntax syntax = new Syntax(n, lexer);
+
+//		syntax.DrawTree(n);
+//		DrawSlowly tree = new DrawSlowly();
+//		tree.drawStepByStep(n, 2000);
+	}
+
+	private void jMenuItem5ActionPerformed(ActionEvent evt) {
+		// TODO add your handling code here:
+		jTextArea2.setText("");
+		jTextArea3.setText("");
+		jTextArea4.setText("");
+		Node n = new Node("Program");
+
+		String threeAddress = "";
+		String tokenStr = "";
+		String error = "";
+		String tmp;
+		int i = 1;
+
+		List<String> input = new ArrayList<>();
+
+		String[] split = jTextPane2.getText().split("\n");
+		for (String line : split)
+			input.add(line);
+
+		Lexer lexer = new Lexer(input);
+		Syntax syntax = new Syntax(n, lexer);
+
+		List<Token> tokens = lexer.getTokenList();
+		List<Node> treeNode = syntax.getTreeNode();
+
+		Semantics semantics = new Semantics(treeNode, tokens);
+		List<String> threeAddressInfo = semantics.getThreeAddressInfo();
+		List<String> semanticsErrorInfo = semantics.getErrorInfo();
+
+		if (semanticsErrorInfo.size() == 0) {
+			for (String string : threeAddressInfo) {
+				if (i < 10) tmp = "0" + i;
+				else tmp = i + "";
+				threeAddress += tmp + "  " + string;
+				i++;
+			}
+			for (Token token : tokens)
+				tokenStr += token.getKey() + "\t[" + token.getTag() + "]\t" + token.getValue() + "\n";
+
+			jTextArea2.setText(threeAddress);
+			jTextArea3.setText(tokenStr);
+		} else {
+			for (String string : semanticsErrorInfo)
+				error += string + "\n";
+			jTextArea2.setText(error);
+		}
+	}
+
 
 	/**
 	 * @param args the command line arguments
 	 */
 	public static void main(String args[]) {
-		/* Set the Nimbus look and feel */
-		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-		/* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
+		String lookAndFeel = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
 		try {
-			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(Compiler.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(Compiler.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(Compiler.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(Compiler.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			UIManager.setLookAndFeel(lookAndFeel);
+		} catch (Exception e) {
+			System.exit(0);
 		}
-		//</editor-fold>
-		//</editor-fold>
+		final Compiler lui = new Compiler();
+		lui.showUI();
 
-        /* Create and display the form */
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new Compiler().setVisible(true);
+	}
+
+	public void showUI() {
+		this.setVisible(true);
+		this.setDragable(this);
+	}
+
+	private void setDragable(final Compiler lui) {
+		this.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				isMoved = false;// 鼠标释放了以后，是不能再拖拽的了
+				lui.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				isMoved = true;
+				pre_point = new Point(e.getX(), e.getY());// 得到按下去的位置
+				lui.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+			}
+		});
+		//拖动时当前的坐标减去鼠标按下去时的坐标，就是界面所要移动的向量。
+		this.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+			public void mouseDragged(java.awt.event.MouseEvent e) {
+				if (isMoved) {// 判断是否可以拖拽
+					end_point = new Point(lui.getLocation().x + e.getX() - pre_point.x,
+							lui.getLocation().y + e.getY() - pre_point.y);
+					lui.setLocation(end_point);
+				}
 			}
 		});
 	}
 
 	// Variables declaration - do not modify
-	private javax.swing.JButton jButton1;
-	private javax.swing.JButton jButton2;
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JMenu jMenu1;
+	private javax.swing.JMenu jMenu2;
+	private javax.swing.JMenu jMenu3;
+	private javax.swing.JMenuBar jMenuBar1;
+	private javax.swing.JMenuItem jMenuItem1;
+	private javax.swing.JMenuItem jMenuItem2;
+	private javax.swing.JMenuItem jMenuItem3;
+	private javax.swing.JMenuItem jMenuItem4;
+	private javax.swing.JMenuItem jMenuItem5;
+	private javax.swing.JMenuItem jMenuItem6;
 	private javax.swing.JPanel jPanel1;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JScrollPane jScrollPane2;
 	private javax.swing.JScrollPane jScrollPane3;
 	private javax.swing.JScrollPane jScrollPane4;
+	private javax.swing.JScrollPane jScrollPane5;
 	private javax.swing.JTextArea jTextArea1;
 	private javax.swing.JTextArea jTextArea2;
 	private javax.swing.JTextArea jTextArea3;
 	private javax.swing.JTextArea jTextArea4;
+	private javax.swing.JTextPane jTextPane2;
 	// End of variables declaration
 }

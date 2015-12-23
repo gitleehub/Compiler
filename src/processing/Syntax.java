@@ -3,11 +3,8 @@ package processing;
 import io.Pair;
 import tree.*;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
+
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by He on 2015/11/25.
@@ -324,14 +321,14 @@ public class Syntax {
 
 				}
 
-				//单独处理缺失";"
-				if (i == line.size() - 1 && !stack.isEmpty() && !stack.peek().equals("stmts") && !stack.peek().equals("else")) {
+				if (i == line.size() - 1 && tmp_output_info.equals("match") && (token.equals("then") || token.equals("else")))
+					break;
 
-					String ptoken = ";";
-					if (stack.peek().equals("then"))
-						ptoken = "then";
-					if (stack.peek().equals("else"))
-						ptoken = "else";
+				//单独处理缺失";"
+//				if(stack.isEmpty())
+//					System.out.println(nowline);
+				if (i == line.size() - 1 && !stack.isEmpty() && !stack.peek().equals("stmts") && !stack.peek().equals("then") && !stack.peek().equals("else") && (!token.equals("{") || !token.equals("}") || !token.equals(";") || !token.equals("$")))
+				{
 
 					tmpstack = (Stack<String>) stack.clone();
 					while (!tmpstack.isEmpty())
@@ -344,7 +341,8 @@ public class Syntax {
 
 					while (!stack.peek().equals("stmts"))
 						stack.pop();
-					tmp_output_info = "line " + nowline + " error line ,may need " + ptoken;
+
+					tmp_output_info = "line " + nowline + " error line ,isn't a legal line";
 					errorInfo.add(tmp_output_info);
 					outputInfo.add(tmp_output_info);
 					tmp_output_info = "";

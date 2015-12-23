@@ -241,5 +241,3 @@ public class Node {
 		return !visited;
 	}
 }
-
-

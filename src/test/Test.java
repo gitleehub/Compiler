@@ -40,13 +40,16 @@ public class Test {
 
 		Semantics semantics;
 
-		if (syntaxErrorInfo.size() == 0) {
+		if (true) {
 			for (int i = 0; i < stackInfo.size(); i++) {
 				System.out.print(stackInfo.get(i) + "\t\t\t\t\t\t\t\t");
 				System.out.print(inputInfo.get(i) + "\t\t\t\t\t\t\t\t");
 				System.out.println(outputInfo.get(i));
 			}
 			System.out.println();
+
+			for (String string : syntaxErrorInfo)
+				System.err.println(string);
 
 			semantics = new Semantics(treeNode, tokens);
 			List<String> threeAddressInfo = semantics.getThreeAddressInfo();
@@ -66,8 +69,8 @@ public class Test {
 					System.out.println(string);
 
 				//动态画树
-				DrawSlowly tree = new DrawSlowly();
-				tree.drawStepByStep(n, 1000);
+//				DrawSlowly tree = new DrawSlowly();
+//				tree.drawStepByStep(n, 1000);
 
 			} else
 				for (String string : semanticsErrorInfo)
