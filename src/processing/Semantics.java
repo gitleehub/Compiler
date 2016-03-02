@@ -14,6 +14,8 @@ public class Semantics {
 	static int i = 1;
 	static int j = 1;
 
+	//数据
+
 	private List<String> threeAddressInfo = new ArrayList<>();
 	private List<String> errorInfo = new ArrayList<>();
 
