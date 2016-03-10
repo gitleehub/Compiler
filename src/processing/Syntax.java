@@ -9,6 +9,8 @@ import java.util.*;
 /**
  * Created by He on 2015/11/25.
  */
+
+//test for github
 public class Syntax {
 	private static Map<Pair<String, String>, String> map = new HashMap<Pair<String, String>, String>() {
 		{
